@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:total_x/resources/constants/font_style.dart';
 import 'package:total_x/resources/widgets/button_widget.dart';
 import 'package:total_x/resources/widgets/textfield.dart';
@@ -31,7 +30,7 @@ class LoginScreen extends StatelessWidget {
               key: loginKey,
               child: MyTextField(
                 number: TextInputType.number,
-                validator: (value) => Validations.isNumber(value),
+                validator: (value) => Validations.isPhoneNumber(value),
                 controller: phoneNumberController,
                 hintText: 'Enter your Number',
               ),
