@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:total_x/resources/constants/font_style.dart';
+import 'package:total_x/resources/widgets/button_widget.dart';
 import 'package:total_x/resources/widgets/otp_textfield.dart';
+import 'package:total_x/view/home_screen/home_scree.dart';
 
 // ignore: must_be_immutable
 class OtpScreen extends StatelessWidget {
@@ -53,6 +55,9 @@ class OtpScreen extends StatelessWidget {
             SizedBox(height: size.height * 0.02),
             Padding(
               padding: EdgeInsets.only(left: size.width / 4),
+
+              //timer
+
               child: RichText(
                 text: TextSpan(
                   text: "Don't Get OTP?",
@@ -66,6 +71,15 @@ class OtpScreen extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(height: size.height * 0.02),
+            ButtonWidget(
+              title: 'Verify',
+              onPress: () {
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                    (route) => false);
+              },
+            )
           ],
         ),
       ),

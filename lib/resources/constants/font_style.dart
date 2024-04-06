@@ -7,4 +7,7 @@ class AppFonts {
 
   static final TextStyle montesserateGrey =
       GoogleFonts.montserrat(color: const Color.fromARGB(255, 127, 127, 127));
+
+  static const TextStyle normalBold =
+      TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
 }

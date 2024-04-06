@@ -30,7 +30,6 @@ class LoginScreen extends StatelessWidget {
             Form(
               key: loginKey,
               child: MyTextField(
-                isSufix: false,
                 number: TextInputType.number,
                 validator: (value) => Validations.isNumber(value),
                 controller: phoneNumberController,

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
-class MyTextField extends StatelessWidget {
+class SearchTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   TextInputType? number;
   final FormFieldValidator<String?>? validator;
 
-  MyTextField({
+  SearchTextField({
     super.key,
     this.number,
     required this.validator,
@@ -17,22 +17,28 @@ class MyTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final borderRadius = BorderRadius.circular(30);
+
     return Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-      constraints: const BoxConstraints(minHeight: 50, maxHeight: 100),
+      constraints: const BoxConstraints(minHeight: 40, maxHeight: 53),
       child: TextFormField(
         validator: validator,
         keyboardType: number ?? TextInputType.text,
         controller: controller,
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-          border: const OutlineInputBorder(
-              borderSide: BorderSide(width: 5, color: Colors.black)),
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey),
+          prefixIcon: const Icon(Icons.search),
+          border: OutlineInputBorder(
+            borderRadius: borderRadius,
+            borderSide: const BorderSide(width: 5, color: Colors.black),
           ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black, width: 1),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: borderRadius,
+            borderSide: const BorderSide(color: Colors.grey),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: borderRadius,
+            borderSide: const BorderSide(color: Colors.black, width: 1),
           ),
           hintText: hintText,
           hintStyle: TextStyle(color: Colors.grey[500]),
