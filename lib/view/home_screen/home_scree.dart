@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:total_x/resources/constants/app_colors.dart';
 import 'package:total_x/resources/constants/font_style.dart';
@@ -21,8 +22,15 @@ class _HomeScreenState extends State<HomeScreen> {
   String? imagePath;
   File? profileImage;
 
+  final user = FirebaseAuth.instance.currentUser;
+
+  signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
+    print('Home ${user!.phoneNumber}');
     final size = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(

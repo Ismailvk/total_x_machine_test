@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pinput/pinput.dart';
+import 'package:total_x/controller/login/login_bloc.dart';
+import 'package:total_x/resources/constants/app_colors.dart';
 import 'package:total_x/resources/constants/font_style.dart';
 import 'package:total_x/resources/widgets/button_widget.dart';
-import 'package:total_x/resources/widgets/otp_textfield.dart';
-import 'package:total_x/view/home_screen/home_scree.dart';
+import 'package:total_x/utils/snackbar.dart';
+import 'package:total_x/view/wrapper/wrapper.dart';
 
 // ignore: must_be_immutable
 class OtpScreen extends StatelessWidget {
   final String phoneNumber;
-  OtpScreen({super.key, required this.phoneNumber});
-
-  TextEditingController pin1 = TextEditingController();
-  TextEditingController pin2 = TextEditingController();
-  TextEditingController pin3 = TextEditingController();
-  TextEditingController pin4 = TextEditingController();
-  TextEditingController pin5 = TextEditingController();
-  TextEditingController pin6 = TextEditingController();
+  final String vid;
+  OtpScreen({super.key, required this.phoneNumber, required this.vid});
+  String otp = '';
 
   @override
   Widget build(BuildContext context) {
@@ -35,22 +34,22 @@ class OtpScreen extends StatelessWidget {
               style: AppFonts.montesserateGrey,
             ),
             SizedBox(height: size.height * 0.02),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                OtpTexfield(
-                    controller: pin1, validator: (otp) => validOtp(otp!)),
-                OtpTexfield(
-                    controller: pin2, validator: (otp) => validOtp(otp!)),
-                OtpTexfield(
-                    controller: pin3, validator: (otp) => validOtp(otp!)),
-                OtpTexfield(
-                    controller: pin4, validator: (otp) => validOtp(otp!)),
-                OtpTexfield(
-                    controller: pin5, validator: (otp) => validOtp(otp!)),
-                OtpTexfield(
-                    controller: pin6, validator: (otp) => validOtp(otp!)),
-              ],
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(6),
+                child: StatefulBuilder(
+                  builder: (context, setState) {
+                    return Pinput(
+                      length: 6,
+                      onChanged: (value) {
+                        setState(() {
+                          otp = value;
+                        });
+                      },
+                    );
+                  },
+                ),
+              ),
             ),
             SizedBox(height: size.height * 0.02),
             Padding(
@@ -65,34 +64,35 @@ class OtpScreen extends StatelessWidget {
                   children: const <TextSpan>[
                     TextSpan(
                       text: ' Resend',
-                      style: TextStyle(color: Colors.blueAccent),
+                      style: TextStyle(color: AppColors.blueAnccent),
                     )
                   ],
                 ),
               ),
             ),
             SizedBox(height: size.height * 0.02),
-            ButtonWidget(
-              title: 'Verify',
-              onPress: () {
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
-                    (route) => false);
+            BlocListener<LoginBloc, LoginState>(
+              listener: (context, state) {
+                if (state is OtpVerifiedSuccessState) {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => const Wrapper()),
+                      (route) => false);
+                } else if (state is GetOtpFailedState) {
+                  topSnackbar(context, state.exp, AppColors.red);
+                }
               },
+              child: ButtonWidget(
+                title: 'Verify',
+                onPress: () {
+                  if (otp.length < 6) {
+                    return topSnackbar(context, 'Incorrect OTP', AppColors.red);
+                  }
+                },
+              ),
             )
           ],
         ),
       ),
     );
-  }
-
-  String? validOtp(String otp) {
-    if (pin1.text.isEmpty &&
-        pin2.text.isEmpty &&
-        pin3.text.isEmpty &&
-        pin4.text.isEmpty) {
-      return '';
-    }
-    return null;
   }
 }

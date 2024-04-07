@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:total_x/controller/login/login_bloc.dart';
+import 'package:total_x/resources/constants/app_colors.dart';
 import 'package:total_x/resources/constants/font_style.dart';
 import 'package:total_x/resources/widgets/button_widget.dart';
 import 'package:total_x/resources/widgets/textfield.dart';
+import 'package:total_x/utils/snackbar.dart';
 import 'package:total_x/utils/validation.dart';
 import 'package:total_x/view/otp_screen/otp_screen.dart';
 
@@ -49,16 +53,32 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: size.height * 0.03),
-            ButtonWidget(
-              title: 'Get Otp',
-              onPress: () {
-                if (loginKey.currentState!.validate()) {
-                  Navigator.of(context).push(MaterialPageRoute(
+            BlocListener<LoginBloc, LoginState>(
+              listener: (context, state) {
+                print(
+                    '-------------------------------------------------------------------------------------------');
+                print(state);
+                if (state is GetOtpFailedState) {
+                  topSnackbar(context, state.exp, AppColors.red);
+                } else if (state is GetOtpSuccessState) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
                       builder: (context) => OtpScreen(
-                            phoneNumber: phoneNumberController.text,
-                          )));
+                          phoneNumber: phoneNumberController.text,
+                          vid: state.vid),
+                    ),
+                  );
                 }
               },
+              child: ButtonWidget(
+                title: 'Get Otp',
+                onPress: () {
+                  if (loginKey.currentState!.validate()) {
+                    context.read<LoginBloc>().add(
+                        GetOptEvent(phoneNumber: phoneNumberController.text));
+                  }
+                },
+              ),
             )
           ],
         ),

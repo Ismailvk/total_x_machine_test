@@ -15,4 +15,9 @@ class Validations {
     if (value == null || value.isEmpty) return '$field is Required';
     return hasNumber.hasMatch(value) ? null : 'only Number is allowed';
   }
+
+  static String formatPhoneNumber(String phoneNumber) {
+    final numericPhoneNumber = phoneNumber.replaceAll(RegExp(r'[^0-9]'), '');
+    return numericPhoneNumber;
+  }
 }
