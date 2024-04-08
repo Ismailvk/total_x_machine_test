@@ -222,6 +222,7 @@ class BottotmSheets {
                                             userModel: userData));
                                     ageController.text = '';
                                     nameController.text = '';
+                                    phoneController.text = '';
                                     Navigator.of(context).pop();
                                   }
                                 },

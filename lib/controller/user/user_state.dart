@@ -27,3 +27,9 @@ final class YoungerAgeGroupSuccessState extends UserState {
 
   YoungerAgeGroupSuccessState({required this.userList});
 }
+
+final class SearchSuccessState extends UserState {
+  final List<UserModel> searchList;
+
+  SearchSuccessState({required this.searchList});
+}

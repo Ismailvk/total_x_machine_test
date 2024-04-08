@@ -45,9 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Expanded(
                   child: SearchTextField(
-                      validator: (value) => null,
-                      controller: searchController,
-                      hintText: 'Search by name'),
+                      controller: searchController, hintText: 'Search by name'),
                 ),
                 const SizedBox(width: 5),
                 GestureDetector(
@@ -78,6 +76,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     return UserListBuilderWidget(
                         itemCount: state.userList.length,
                         userList: state.userList);
+                  } else if (state is SearchSuccessState) {
+                    return UserListBuilderWidget(
+                        itemCount: state.searchList.length,
+                        userList: state.searchList);
                   }
                   return Center(
                     child: Text(

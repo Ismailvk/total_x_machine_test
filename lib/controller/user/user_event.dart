@@ -13,3 +13,9 @@ class AllAgeSortEvent extends UserEvent {}
 class ElderAgeSortEvent extends UserEvent {}
 
 class YoungerAgeSortEvent extends UserEvent {}
+
+class SearchingEvent extends UserEvent {
+  final String searchWords;
+
+  SearchingEvent({required this.searchWords});
+}

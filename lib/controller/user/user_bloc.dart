@@ -10,6 +10,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<AllAgeSortEvent>(allAgeSortEvent);
     on<ElderAgeSortEvent>(elderAgeSortEvent);
     on<YoungerAgeSortEvent>(youngerAgeSortEvent);
+    on<SearchingEvent>(searchingEvent);
   }
 
   List<UserModel> userList = [];
@@ -37,5 +38,20 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     List<UserModel> youngerAgeList =
         userList.where((user) => user.age < 60).toList();
     emit(YoungerAgeGroupSuccessState(userList: youngerAgeList));
+  }
+
+  FutureOr<void> searchingEvent(SearchingEvent event, Emitter<UserState> emit) {
+    List<UserModel> searchList = userList
+        .where((user) =>
+            user.name
+                .toString()
+                .toLowerCase()
+                .contains(event.searchWords.toString().toLowerCase()) ||
+            user.phoneNumber
+                .toString()
+                .toLowerCase()
+                .contains(event.searchWords.toString().toLowerCase()))
+        .toList();
+    emit(SearchSuccessState(searchList: searchList));
   }
 }

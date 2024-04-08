@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:total_x/controller/user/user_bloc.dart';
 
 // ignore: must_be_immutable
 class SearchTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   TextInputType? number;
-  final FormFieldValidator<String?>? validator;
 
   SearchTextField({
     super.key,
     this.number,
-    required this.validator,
     required this.controller,
     required this.hintText,
   });
@@ -21,8 +21,10 @@ class SearchTextField extends StatelessWidget {
 
     return Container(
       constraints: const BoxConstraints(minHeight: 40, maxHeight: 53),
-      child: TextFormField(
-        validator: validator,
+      child: TextField(
+        onChanged: (value) {
+          context.read<UserBloc>().add(SearchingEvent(searchWords: value));
+        },
         keyboardType: number ?? TextInputType.text,
         controller: controller,
         textInputAction: TextInputAction.next,
