@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:total_x/resources/constants/app_colors.dart';
+import 'package:total_x/utils/show_dialogue.dart';
 
-PreferredSizeWidget appbar() {
+PreferredSizeWidget appbar(BuildContext context) {
   return AppBar(
     title: const Row(
       children: [
@@ -19,7 +19,8 @@ PreferredSizeWidget appbar() {
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: GestureDetector(
             onTap: () async {
-              await FirebaseAuth.instance.signOut();
+              ShowDialogue.dialogue(context, AppColors.red, "LogOut",
+                  'Do you want Logout', () => null);
             },
             child: const Icon(Icons.logout)),
       )

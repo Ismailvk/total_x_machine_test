@@ -4,6 +4,7 @@ import 'package:pinput/pinput.dart';
 import 'package:total_x/controller/login/login_bloc.dart';
 import 'package:total_x/resources/constants/app_colors.dart';
 import 'package:total_x/resources/constants/font_style.dart';
+import 'package:total_x/resources/constants/image_urls.dart';
 import 'package:total_x/resources/widgets/button_widget.dart';
 import 'package:total_x/utils/snackbar.dart';
 
@@ -24,7 +25,7 @@ class OtpScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(child: Image.asset('lib/images/Group.png')),
+            Center(child: Image.asset(ImageUrls.otpImage)),
             SizedBox(height: size.height * 0.02),
             Text('OTP Verification', style: AppFonts.montesserateHeading),
             SizedBox(height: size.height * 0.02),
@@ -53,9 +54,6 @@ class OtpScreen extends StatelessWidget {
             SizedBox(height: size.height * 0.02),
             Padding(
               padding: EdgeInsets.only(left: size.width / 4),
-
-              //timer
-
               child: RichText(
                 text: TextSpan(
                   text: "Don't Get OTP?",

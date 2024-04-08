@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:total_x/controller/login/login_bloc.dart';
 import 'package:total_x/resources/constants/app_colors.dart';
 import 'package:total_x/resources/constants/font_style.dart';
+import 'package:total_x/resources/constants/image_urls.dart';
 import 'package:total_x/resources/widgets/button_widget.dart';
 import 'package:total_x/resources/widgets/textfield.dart';
 import 'package:total_x/utils/snackbar.dart';
@@ -25,7 +26,7 @@ class LoginScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(child: Image.asset('lib/images/OBJECTS.png')),
+            Center(child: Image.asset(ImageUrls.loginImage)),
             SizedBox(height: size.height * 0.02),
             Text('Enter Phone Number', style: AppFonts.montesserateHeading),
             SizedBox(height: size.height * 0.02),
