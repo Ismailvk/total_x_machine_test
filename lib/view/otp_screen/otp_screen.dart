@@ -6,7 +6,6 @@ import 'package:total_x/resources/constants/app_colors.dart';
 import 'package:total_x/resources/constants/font_style.dart';
 import 'package:total_x/resources/widgets/button_widget.dart';
 import 'package:total_x/utils/snackbar.dart';
-import 'package:total_x/view/wrapper/wrapper.dart';
 
 // ignore: must_be_immutable
 class OtpScreen extends StatelessWidget {
@@ -73,11 +72,7 @@ class OtpScreen extends StatelessWidget {
             SizedBox(height: size.height * 0.02),
             BlocListener<LoginBloc, LoginState>(
               listener: (context, state) {
-                if (state is OtpVerifiedSuccessState) {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => const Wrapper()),
-                      (route) => false);
-                } else if (state is GetOtpFailedState) {
+                if (state is GetOtpFailedState) {
                   topSnackbar(context, state.exp, AppColors.red);
                 }
               },
@@ -87,6 +82,8 @@ class OtpScreen extends StatelessWidget {
                   if (otp.length < 6) {
                     return topSnackbar(context, 'Incorrect OTP', AppColors.red);
                   }
+                  context.read<LoginBloc>().add(
+                      VerifyButtonEvent(otp: otp, vid: vid, context: context));
                 },
               ),
             )

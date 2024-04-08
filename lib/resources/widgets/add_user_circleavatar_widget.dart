@@ -8,7 +8,7 @@ class HalfDisc extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      size: const Size(118, 90),
+      size: const Size(145, 50),
       painter: HalfDiscPainter(),
     );
   }
@@ -21,7 +21,7 @@ class HalfDiscPainter extends CustomPainter {
       ..color = Colors.black.withOpacity(0.4)
       ..style = PaintingStyle.fill;
 
-    final double radius = size.height / 1.69;
+    final double radius = size.height / 1.7;
     final double centerX = size.width / 1.5;
 
     canvas.drawArc(

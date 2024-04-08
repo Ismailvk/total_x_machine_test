@@ -7,7 +7,6 @@ import 'package:total_x/resources/widgets/button_widget.dart';
 import 'package:total_x/resources/widgets/textfield.dart';
 import 'package:total_x/utils/snackbar.dart';
 import 'package:total_x/utils/validation.dart';
-import 'package:total_x/view/otp_screen/otp_screen.dart';
 
 // ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
@@ -55,19 +54,8 @@ class LoginScreen extends StatelessWidget {
             SizedBox(height: size.height * 0.03),
             BlocListener<LoginBloc, LoginState>(
               listener: (context, state) {
-                print(
-                    '-------------------------------------------------------------------------------------------');
-                print(state);
                 if (state is GetOtpFailedState) {
                   topSnackbar(context, state.exp, AppColors.red);
-                } else if (state is GetOtpSuccessState) {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => OtpScreen(
-                          phoneNumber: phoneNumberController.text,
-                          vid: state.vid),
-                    ),
-                  );
                 }
               },
               child: ButtonWidget(
@@ -75,7 +63,11 @@ class LoginScreen extends StatelessWidget {
                 onPress: () {
                   if (loginKey.currentState!.validate()) {
                     context.read<LoginBloc>().add(
-                        GetOptEvent(phoneNumber: phoneNumberController.text));
+                          GetOptEvent(
+                            phoneNumber: phoneNumberController.text,
+                            context: context,
+                          ),
+                        );
                   }
                 },
               ),

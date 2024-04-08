@@ -1,9 +1,14 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:total_x/controller/user/user_bloc.dart';
 import 'package:total_x/resources/constants/app_colors.dart';
 import 'package:total_x/resources/constants/font_style.dart';
+import 'package:total_x/resources/constants/image_urls.dart';
+import 'package:total_x/resources/widgets/appbar.dart';
 import 'package:total_x/resources/widgets/search_textfield.dart';
+import 'package:total_x/resources/widgets/user_list_builder_widget.dart';
 import 'package:total_x/utils/bottom_sheet.dart';
 
 // ignore: must_be_immutable
@@ -18,33 +23,19 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController searchController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController ageController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+
   int optionValue = 1;
   String? imagePath;
   File? profileImage;
 
   final user = FirebaseAuth.instance.currentUser;
 
-  signOut() async {
-    await FirebaseAuth.instance.signOut();
-  }
-
   @override
   Widget build(BuildContext context) {
-    print('Home ${user!.phoneNumber}');
     final size = MediaQuery.sizeOf(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Row(
-          children: [
-            Icon(Icons.location_on, color: AppColors.white),
-            SizedBox(width: 5),
-            Text(
-              'Nilambur',
-              style: TextStyle(color: AppColors.white, fontSize: 18),
-            ),
-          ],
-        ),
-      ),
+      appBar: appbar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Column(
@@ -63,26 +54,35 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () {
                       BottotmSheets.sortBottomSheet(context, optionValue);
                     },
-                    child: Image.asset('lib/images/Vector.png'))
+                    child: Image.asset(ImageUrls.menuIcon))
               ],
             ),
             const SizedBox(height: 8),
             Text('User Lists', style: AppFonts.montesserateHeading),
             Expanded(
-              child: ListView.builder(
-                itemCount: 20,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return const Card(
-                    child: ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: CircleAvatar(
-                        radius: 40,
-                        backgroundImage: NetworkImage(
-                            'https://t3.ftcdn.net/jpg/06/78/09/78/360_F_678097876_9kJnFlRYGAeibsVxspqtCL9UR8giLAvF.jpg'),
-                      ),
-                      title: Text('Martin Dokidis'),
-                      subtitle: Text('34'),
+              child: BlocBuilder<UserBloc, UserState>(
+                builder: (context, state) {
+                  if (state is UserAddedState) {
+                    return UserListBuilderWidget(
+                        itemCount: state.usermodel.length,
+                        userList: state.usermodel);
+                  } else if (state is AllAgeGroupSuccessState) {
+                    return UserListBuilderWidget(
+                        itemCount: state.userList.length,
+                        userList: state.userList);
+                  } else if (state is ElderAgeGroupSuccessState) {
+                    return UserListBuilderWidget(
+                        itemCount: state.userList.length,
+                        userList: state.userList);
+                  } else if (state is YoungerAgeGroupSuccessState) {
+                    return UserListBuilderWidget(
+                        itemCount: state.userList.length,
+                        userList: state.userList);
+                  }
+                  return Center(
+                    child: Text(
+                      'No Data Found',
+                      style: AppFonts.montesserateGrey,
                     ),
                   );
                 },
@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: const Icon(Icons.add, color: AppColors.white),
         onPressed: () {
           BottotmSheets.addUserImage(
-              context, size, nameController, ageController);
+              context, size, nameController, ageController, phoneController);
         },
       ),
     );
